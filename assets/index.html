@@ -4,6 +4,63 @@
         <script src="wasm_exec.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js" integrity="sha512-TZlMGFY9xKj38t/5m2FzJ+RM/aD5alMHDe26p0mYUMoCF5G7ibfHUQILq0qQPV3wlsnCwL+TPRNK4vIWGLOkUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        
+        <style>
+            div {
+                width: 100%;
+                text-align: center;
+                font-size: 1em;
+                font-family: Verdana, Arial, sans-serif;
+            }
+
+            label {
+                font-size: 2em;
+            }
+
+            input {
+                /* padding: 10px; */
+                font-size: 1.2em;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .score-result {
+                width: 22px;
+                height: 20px;
+                background-color: darkgray;
+                border-radius: 20px;
+                display: inline-block;
+                font-weight: bold;
+                font-family: Trebuchet MS;
+                padding: 2px;
+                padding-right: 4px;
+            }
+            .score-0 {
+                /* background-color: maroon; */
+                background-color: #d3d3d3;
+            }
+            .score-1 {
+                /* background-color: red; */
+                background-color: #f1d8ca;
+            }
+            .score-2 {
+                /* background-color: orange; */
+                background-color: #ded9b7;
+                
+            }
+            .score-3 {
+                /* background-color: olive; */
+                background-color: #a0dc9a;
+            }
+            .score-4 {
+                /* background-color: green; */
+                background-color: #a5cedd;
+            }
+        </style>
+
         <script>
             const go = new Go();
             WebAssembly.instantiateStreaming(fetch("zxcvb.wasm"), go.importObject).then((result) => {
@@ -23,23 +80,28 @@
                 let result3 = document.getElementById('score3');
 
                 result1.textContent = zxcvbnJS.score;
+                result1.className = "score-result score-"+ zxcvbnJS.score;
+
                 result2.textContent = zxcvbnGO.score;
+                result2.className = "score-result score-" + zxcvbnGO.score;
+
                 result3.textContent = zxcvbnGOFork.score;
+                result3.className = "score-result score-" + zxcvbnGOFork.score;
             }
 
         </script>
     </head>
     <body>
-        <div>
-            <label for="password">Password:</label>
-            <input onkeypress="evalPassword()" type="text" id="password" name="password"><br><br>
+        <div class="password">
+            <label for="password">password</label>
+            <input onkeypress="evalPassword()" type="text" id="password" name="password" placeholder="my password"><br><br>
             <!-- <button onclick="evalPassword()">get password strength</button> -->
         </div>
-        <div>
+        <div class="score">
             <h3>score</h3>
-            <p>zxcvbn-js: <span id="score1"></span></p>
-            <p>wasm nbutton23/zxcvbn-go: <span id="score2"></span></p>
-            <p>wasm trustelem/zxcvbn: <span id="score3"></span></p>
+            <p>zxcvbn-js: <span class="score-result" id="score1">0</span></p>
+            <p>wasm nbutton23/zxcvbn-go: <span class="score-result" id="score2">0</span></p>
+            <p>wasm trustelem/zxcvbn: <span class="score-result" id="score3">0</span></p>
         </div>
     </body>
 </html> 
