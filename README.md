@@ -2,6 +2,10 @@
 
 Golang webassembly experiment, the project idea was to call golang functions from JS, the ideal test candidate for this project was the pkg `zxcvbn` which has different implementations with different results depending on the language that's implemented with ([issue: Score deviates from the coffee/javascript version](https://github.com/nbutton23/zxcvbn-go/issues/20)). As IMO the golang pkg has the best implementation and results, the idea was to allow the frontend to use the pkg to avoid discrepancies between frontend and backend password strength score.
 
+**Example: [demo](https://marcos10soares.github.io/go-wasm-test/assets/index.html)**
+
+WASM Browser support: [https://caniuse.com/wasm](https://caniuse.com/wasm)
+
 
 ## Building
 ```bash
