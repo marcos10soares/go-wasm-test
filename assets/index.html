@@ -19,7 +19,6 @@
             }
 
             input {
-                /* padding: 10px; */
                 font-size: 1.2em;
                 padding: 12px 20px;
                 margin: 8px 0;
@@ -63,11 +62,18 @@
         </style>
 
         <script>
+            // clear input on refresh
+            window.onload = function () {
+                document.getElementById('password').value = '';
+            }
+
+            // load web assembly binary
             const go = new Go();
             WebAssembly.instantiateStreaming(fetch("zxcvb.wasm"), go.importObject).then((result) => {
                 go.run(result.instance);
             });
 
+            // function to evaluate password strength
             function evalPassword() {
                 var password = document.getElementById('password').value;
                 console.log(password);
@@ -90,13 +96,28 @@
                 result3.className = "score-result score-" + zxcvbnGOFork.score;
             }
 
+            // work around to capture backspace and delete key press
+            document.addEventListener("keydown", KeyCheck);
+                function KeyCheck(event) {
+                    var KeyID = event.keyCode;
+                    switch (KeyID) {
+                        case 8:
+                            evalPassword();
+                            break;
+                        case 46:
+                            evalPassword();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
         </script>
     </head>
     <body>
         <div class="password">
             <label for="password">password</label>
-            <input onkeypress="evalPassword()" type="text" id="password" name="password" placeholder="my password"><br><br>
-            <!-- <button onclick="evalPassword()">get password strength</button> -->
+            <input onkeypress="evalPassword()" type="text" id="password" name="password" placeholder="my password" autocomplete="off"><br><br>
         </div>
         <div class="score">
             <h3>score</h3>
