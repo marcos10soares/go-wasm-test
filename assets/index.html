@@ -1,0 +1,45 @@
+<html>  
+    <head>
+        <meta charset="utf-8"/>
+        <script src="wasm_exec.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js" integrity="sha512-TZlMGFY9xKj38t/5m2FzJ+RM/aD5alMHDe26p0mYUMoCF5G7ibfHUQILq0qQPV3wlsnCwL+TPRNK4vIWGLOkUQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("zxcvb.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+            });
+
+            function evalPassword() {
+                var password = document.getElementById('password').value;
+                console.log(password);
+
+                let zxcvbnJS = zxcvbn(password);
+                let zxcvbnGO = passwordStrength(password);
+                let zxcvbnGOFork = passwordStrengthFork(password);
+
+                let result1 = document.getElementById('score1');
+                let result2 = document.getElementById('score2');
+                let result3 = document.getElementById('score3');
+
+                result1.textContent = zxcvbnJS.score;
+                result2.textContent = zxcvbnGO.score;
+                result3.textContent = zxcvbnGOFork.score;
+            }
+
+        </script>
+    </head>
+    <body>
+        <div>
+            <label for="password">Password:</label>
+            <input onkeypress="evalPassword()" type="text" id="password" name="password"><br><br>
+            <!-- <button onclick="evalPassword()">get password strength</button> -->
+        </div>
+        <div>
+            <h3>score</h3>
+            <p>zxcvbn-js: <span id="score1"></span></p>
+            <p>zxcvbn-go: <span id="score2"></span></p>
+            <p>zxcvbn-go-fork: <span id="score3"></span></p>
+        </div>
+    </body>
+</html> 
