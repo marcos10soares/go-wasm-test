@@ -9,7 +9,7 @@ WASM Browser support: [https://caniuse.com/wasm](https://caniuse.com/wasm)
 
 ## Building
 ```bash
-GOOS=js GOARCH=wasm go build -o assets/zxcvb.wasm cmd/zxcvb/main.go
+GOOS=js GOARCH=wasm go build -o assets/zxcvbn.wasm cmd/zxcvbn/main.go
 ```
 
 
@@ -32,7 +32,7 @@ cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./assets/
 This is the code block responsible for fetching and exectuing the wasm binary:
 ```javascript
 const go = new Go();
-WebAssembly.instantiateStreaming(fetch("zxcvb.wasm"), go.importObject).then((result) => {
+WebAssembly.instantiateStreaming(fetch("zxcvbn.wasm"), go.importObject).then((result) => {
     go.run(result.instance);
 });
 ```
